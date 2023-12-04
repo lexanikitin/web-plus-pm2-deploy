@@ -27,7 +27,7 @@ module.exports = {
       repo: `git@github.com:${ENV_DEPLOY_GIT_USER}/${ENV_DEPLOY_REPO_NAME}.git`,
       path: ENV_DEPLOY_PATH,
       ssh_options: "StrictHostKeyChecking=no",
-      "pre-deploy-local": `scp .env ${ENV_DEPLOY_USER}@${ENV_DEPLOY_HOST}:${ENV_DEPLOY_PATH}/backend`,
+      "pre-deploy-local": `scp .env ${ENV_DEPLOY_USER}@${ENV_DEPLOY_HOST}:${ENV_DEPLOY_PATH}`,
       "post-deploy":
         "cd backend && npm i && npm run build && pm2 reload ecosystem.config.js && pm2 save",
     },
