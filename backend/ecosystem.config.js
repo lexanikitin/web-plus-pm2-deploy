@@ -27,7 +27,7 @@ module.exports = {
       path: DEPLOY_PATH,
       "pre-deploy-local": `scp ./.env ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/source/backend`,
       "post-deploy":
-        "cd ~/mesto/source/backend && npm i && npm run build && pm2 reload ecosystem.config.js --env production && pm2 save",
+        `cd ${DEPLOY_PATH}/source/backend && npm i && npm run build && pm2 reload ecosystem.config.js --env production && pm2 save`,
     },
   },
 };
