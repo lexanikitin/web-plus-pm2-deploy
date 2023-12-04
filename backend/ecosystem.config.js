@@ -1,14 +1,14 @@
 const dotenv = require('dotenv');
 
+dotenv.config();
 dotenv.config({ path: './.env.deploy' });
 
 const {
-  ENV_DEPLOY_USER,
-  ENV_DEPLOY_HOST,
-  ENV_DEPLOY_PATH,
-  ENV_DEPLOY_REF,
-  ENV_DEPLOY_GIT_USER,
-  ENV_DEPLOY_REPO_NAME,
+  DEPLOY_USER,
+  DEPLOY_HOST,
+  DEPLOY_PATH,
+  DEPLOY_REF,
+  DEPLOY_REPO,
 } = process.env;
 
 module.exports = {
@@ -21,15 +21,14 @@ module.exports = {
 
   deploy: {
     production: {
-      user: ENV_DEPLOY_USER,
-      host: ENV_DEPLOY_HOST,
-      ref: ENV_DEPLOY_REF,
-      repo: `git@github.com:${ENV_DEPLOY_GIT_USER}/${ENV_DEPLOY_REPO_NAME}.git`,
-      path: ENV_DEPLOY_PATH,
-      ssh_options: "StrictHostKeyChecking=no",
-      "pre-deploy-local": `scp .env ${ENV_DEPLOY_USER}@${ENV_DEPLOY_HOST}:${ENV_DEPLOY_PATH}`,
+      user: DEPLOY_USER,
+      host: DEPLOY_HOST,
+      ref: DEPLOY_REF,
+      repo: DEPLOY_REPO,
+      path: DEPLOY_PATH,
+      "pre-deploy-local": `scp ./.env ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/source/backend`,
       "post-deploy":
-        "cd backend && npm i && npm run build && pm2 reload ecosystem.config.js && pm2 save",
+        "cd ${DEPLOY_PATH}/source/backend && npm i && npm run build && pm2 reload ecosystem.config.js --env production && pm2 save",
     },
   },
 };
